@@ -1,35 +1,52 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
 
 android {
+    namespace 'com.ncapdevi.sample'
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
-    lintOptions {
-        abortOnError false
-    }
+
     defaultConfig {
         applicationId "com.ncapdevi.sample"
         minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.compileSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
     }
+
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+        // Optionally, you can add other lint options here
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
+
 repositories {
-    jcenter()
+    google()
+    mavenCentral()
 }
 
 dependencies {
     implementation project(':frag-nav')
-    implementation "com.google.android.material:material:1.0.0"
-    implementation "androidx.appcompat:appcompat:1.0.2"
-    implementation "com.roughike:bottom-bar:2.3.1"
-    testImplementation "junit:junit:$rootProject.ext.junitVersion"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "com.google.android.material:material:1.12.0" // Update to latest version
+    implementation "androidx.appcompat:appcompat:1.7.0" // Update to latest version
+    testImplementation "junit:junit:4.13.2" // Updated version for JUnit
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.23" // Update to latest Kotlin version
 }

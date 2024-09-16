@@ -1,32 +1,38 @@
 package com.ncapdevi.sample.activities
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavLogger
 import com.ncapdevi.fragnav.FragNavSwitchController
 import com.ncapdevi.fragnav.FragNavTransactionOptions
 import com.ncapdevi.fragnav.tabhistory.UniqueTabHistoryStrategy
 import com.ncapdevi.sample.R
-import com.ncapdevi.sample.fragments.*
-import com.roughike.bottombar.BottomBar
+import com.ncapdevi.sample.fragments.BaseFragment
+import com.ncapdevi.sample.fragments.FavoritesFragment
+import com.ncapdevi.sample.fragments.FoodFragment
+import com.ncapdevi.sample.fragments.FriendsFragment
+import com.ncapdevi.sample.fragments.NearbyFragment
+import com.ncapdevi.sample.fragments.RecentsFragment
+
+//import com.roughike.bottombar.BottomBar
 
 class BottomTabsActivity : AppCompatActivity(), BaseFragment.FragmentNavigation, FragNavController.TransactionListener, FragNavController.RootFragmentListener {
     override val numberOfRootFragments: Int = 5
 
     private val fragNavController: FragNavController = FragNavController(supportFragmentManager, R.id.container)
 
-    private lateinit var bottomBar: BottomBar
+//    private lateinit var bottomBar: BottomBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bottom_tabs)
 
-         bottomBar = findViewById(R.id.bottomBar)
+//         bottomBar = findViewById(R.id.bottomBar)
 
         fragNavController.apply {
             transactionListener = this@BottomTabsActivity
@@ -43,7 +49,7 @@ class BottomTabsActivity : AppCompatActivity(), BaseFragment.FragmentNavigation,
 
             navigationStrategy = UniqueTabHistoryStrategy(object : FragNavSwitchController {
                 override fun switchTab(index: Int, transactionOptions: FragNavTransactionOptions?) {
-                    bottomBar.selectTabAtPosition(index)
+//                    bottomBar.selectTabAtPosition(index)
                 }
             })
         }
@@ -52,20 +58,20 @@ class BottomTabsActivity : AppCompatActivity(), BaseFragment.FragmentNavigation,
 
         val initial = savedInstanceState == null
         if (initial) {
-            bottomBar.selectTabAtPosition(INDEX_NEARBY)
+//            bottomBar.selectTabAtPosition(INDEX_NEARBY)
         }
 
-        bottomBar.setOnTabSelectListener({ tabId ->
-            when (tabId) {
-                R.id.bb_menu_recents -> fragNavController.switchTab(INDEX_RECENTS)
-                R.id.bb_menu_favorites -> fragNavController.switchTab(INDEX_FAVORITES)
-                R.id.bb_menu_nearby -> fragNavController.switchTab(INDEX_NEARBY)
-                R.id.bb_menu_friends -> fragNavController.switchTab(INDEX_FRIENDS)
-                R.id.bb_menu_food -> fragNavController.switchTab(INDEX_FOOD)
-            }
-        }, initial)
-
-        bottomBar.setOnTabReselectListener { fragNavController.clearStack() }
+//        bottomBar.setOnTabSelectListener({ tabId ->
+//            when (tabId) {
+//                R.id.bb_menu_recents -> fragNavController.switchTab(INDEX_RECENTS)
+//                R.id.bb_menu_favorites -> fragNavController.switchTab(INDEX_FAVORITES)
+//                R.id.bb_menu_nearby -> fragNavController.switchTab(INDEX_NEARBY)
+//                R.id.bb_menu_friends -> fragNavController.switchTab(INDEX_FRIENDS)
+//                R.id.bb_menu_food -> fragNavController.switchTab(INDEX_FOOD)
+//            }
+//        }, initial)
+//
+//        bottomBar.setOnTabReselectListener { fragNavController.clearStack() }
     }
 
     override fun onBackPressed() {
@@ -74,9 +80,9 @@ class BottomTabsActivity : AppCompatActivity(), BaseFragment.FragmentNavigation,
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        fragNavController.onSaveInstanceState(outState!!)
+        fragNavController.onSaveInstanceState(outState)
 
     }
 

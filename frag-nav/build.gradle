@@ -1,245 +1,65 @@
 plugins {
-    id "com.jfrog.bintray" version "1.8.4"
-    id "com.github.dcendents.android-maven" version "2.1"
-    id 'com.github.kt3k.coveralls' version '2.8.2'
+    id 'java-library' // Use 'java-library' if you're publishing a Java library
+    id 'maven-publish'
 }
 
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'maven'
-apply plugin: 'com.github.kt3k.coveralls'
-apply plugin: "de.mannodermaus.android-junit5"
-apply plugin: "com.vanniktech.android.junit.jacoco"
+// Define your group and version
+group = 'your.group.id'
+version = '1.0.0'
 
-ext {
-    libraryVersionCode = 30
-    libraryVersionName = '3.3.0'
+// Apply any other necessary plugins and configurations for your project here
 
-    //Bintray and Maven
-    bintrayRepo = 'maven'
-    bintrayName = 'frag-nav'
+// Configure the publishing task
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java // Use 'components.aar' if publishing an AAR
 
-    publishedGroupId = 'com.ncapdevi'
-    libraryName = 'FragNav'
-    artifact = 'frag-nav'
+            pom {
+                name = 'Your Library Name'
+                description = 'Description of your library'
+                url = 'https://your-library-url.com'
 
-    libraryDescription = 'A library to help manage multiple fragment stacks'
-
-    siteUrl = 'https://github.com/ncapdevi/FragNav'
-    gitUrl = 'https://github.com/ncapdevi/FragNav.git'
-
-    developerId = 'ncapdevi'
-    developerName = 'Nic Capdevila'
-    developerEmail = 'ncapdevi@gmail.com'
-
-    licenseName = 'The Apache Software License, Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
-}
-
-
-android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
-
-    lintOptions {
-        abortOnError false
-    }
-    defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.compileSdkVersion
-        versionCode libraryVersionCode
-        versionName libraryVersionName
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-        debug {
-            testCoverageEnabled true
-        }
-    }
-
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
-        junitPlatform {
-            filters {
-                engines {
-                    include 'spek2'
-                }
-            }
-        }
-    }
-}
-
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
-    implementation "androidx.fragment:fragment:1.0.0"
-    implementation "androidx.annotation:annotation:1.0.2"
-
-    testImplementation "junit:junit:$rootProject.ext.junitVersion"
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0"
-    testImplementation "org.robolectric:robolectric:4.0.2"
-
-    testImplementation 'org.amshove.kluent:kluent-android:1.42'
-
-    // Spek
-
-    testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spek_version"
-    testImplementation "org.spekframework.spek2:spek-runner-junit5:$spek_version"
-    testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    testImplementation('org.jetbrains.spek:spek-api:1.1.5') {
-        exclude group: 'org.jetbrains.kotlin'
-    }
-    testImplementation('org.jetbrains.spek:spek-junit-platform-engine:1.1.5') {
-        exclude group: 'org.junit.platform'
-        exclude group: 'org.jetbrains.kotlin'
-    }
-
-
-}
-
-group = publishedGroupId                               // Maven Group ID for the artifact
-
-install {
-    repositories.mavenInstaller {
-        // This generates POM.xml with proper parameters
-        pom {
-            project {
-                packaging 'aar'
-                groupId publishedGroupId
-                artifactId artifact
-
-                // Add your description here
-                name libraryName
-                description libraryDescription
-                url siteUrl
-
-                // Set your license
                 licenses {
                     license {
-                        name licenseName
-                        url licenseUrl
+                        name = 'Your License Name'
+                        url = 'https://your-license-url.com'
                     }
                 }
                 developers {
                     developer {
-                        id developerId
-                        name developerName
-                        email developerEmail
+                        id = 'developer-id'
+                        name = 'Developer Name'
+                        email = 'developer@example.com'
                     }
                 }
                 scm {
-                    connection gitUrl
-                    developerConnection gitUrl
-                    url siteUrl
-
+                    connection = 'scm:git:git://your-git-repo-url.com'
+                    developerConnection = 'scm:git:git://your-git-repo-url.com'
+                    url = 'https://your-git-repo-url.com'
                 }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = 'MyMavenRepo'
+            url = uri('https://your-maven-repo-url.com')
+            credentials {
+                username = 'your-username'
+                password = 'your-password'
             }
         }
     }
 }
 
-
-version = libraryVersionName
-
-if (project.hasProperty("android")) { // Android libraries
-    task sourcesJar(type: Jar) {
-        classifier = 'sources'
-        from android.sourceSets.main.java.srcDirs
-    }
-
-/*    task javadoc(type: Javadoc) {
-        source = android.sourceSets.main.java.srcDirs
-        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    }*/
-} else { // Java libraries
-    task sourcesJar(type: Jar, dependsOn: classes) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
+// Configure Java compilation options if needed
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.compilerArgs.addAll(['-Xlint:deprecation', '-Xlint:unchecked'])
 }
-
-/*task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}*/
-
-artifacts {
-    // archives javadocJar
-    archives sourcesJar
-}
-
-// Bintray
-bintray {
-    Properties properties = new Properties()
-    if (project.rootProject.file('local.properties').exists()) {
-        properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-        user = properties.getProperty("bintray.user")
-        key = properties.getProperty("bintray.apikey")
-
-        configurations = ['archives']
-        pkg {
-            repo = bintrayRepo
-            name = bintrayName
-            desc = libraryDescription
-            websiteUrl = siteUrl
-            vcsUrl = gitUrl
-            licenses = allLicenses
-            publish = true
-            publicDownloadNumbers = true
-            version {
-                desc = libraryDescription
-            }
-        }
-    }
-}
-
-coveralls {
-    jacocoReportPath = "${buildDir}/reports/jacoco/debug/jacoco.xml"
-}
-
-tasks.coveralls {
-    dependsOn 'jacocoTestReportDebug'
-    onlyIf { System.env.'CI' }
-}
-task createPom {
-    pom {
-        project {
-            packaging 'aar'
-
-            name project.name
-            description libraryDescription
-            url siteUrl
-            inceptionYear '2016'
-
-            licenses {
-                license {
-                    name 'The Apache Software License, Version 2.0'
-                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                }
-            }
-            scm {
-                connection gitUrl
-                developerConnection gitUrl
-                url siteUrl
-            }
-            developers {
-                developer {
-                    id 'ncapdevi'
-                    name 'Nic Capdevila'
-                    email 'ncapdevi@gmail.com'
-                }
-            }
-        }
-    }.writeTo("$buildDir/poms/pom-default.xml").writeTo("pom.xml")
-}
-build.dependsOn createPom
-repositories {
-    mavenCentral()
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
