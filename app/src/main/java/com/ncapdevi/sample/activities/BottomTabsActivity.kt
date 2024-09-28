@@ -74,6 +74,7 @@ class BottomTabsActivity : AppCompatActivity(), BaseFragment.FragmentNavigation,
 //        bottomBar.setOnTabReselectListener { fragNavController.clearStack() }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (fragNavController.popFragment().not()) {
             super.onBackPressed()
