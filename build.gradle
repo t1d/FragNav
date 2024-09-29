@@ -1,13 +1,12 @@
 buildscript {
-    ext.kotlin_version = '1.9.20'
-    ext.spek_version = '2.0.0-rc.1'
+    ext.kotlinVersion = '1.9.23'
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.2.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.android.tools.build:gradle:8.5.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "de.mannodermaus.gradle.plugins:android-junit5:1.11.0.0"
     }
 }
@@ -30,12 +29,13 @@ repositories {
     mavenCentral()
 }
 
-task clean(type: Delete) {
+tasks.register('clean', Delete) {
     delete rootProject.buildDir
 }
 
 ext {
     // App dependencies
+    spekVersion = '2.0.19'
     junitVersion = '4.12'
     buildToolsVersion = '28.0.3'
     minSdkVersion = 21

@@ -62,6 +62,7 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
         when {
@@ -71,7 +72,7 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         fragNavController.onSaveInstanceState(outState)
     }
@@ -96,7 +97,7 @@ class NavDrawerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         return true
     }
 
-    override fun pushFragment(fragment: Fragment, sharedList: List<Pair<View, String>>?) {
+    override fun pushFragment(fragment: Fragment, sharedElementList: List<Pair<View, String>>?) {
         fragNavController.pushFragment(fragment)
     }
 }

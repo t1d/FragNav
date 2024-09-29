@@ -22,11 +22,6 @@ android {
         }
     }
 
-    lintOptions {
-        abortOnError false
-        checkReleaseBuilds false
-        // Optionally, you can add other lint options here
-    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -35,6 +30,10 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
     }
 }
 
@@ -48,5 +47,5 @@ dependencies {
     implementation "com.google.android.material:material:1.12.0" // Update to latest version
     implementation "androidx.appcompat:appcompat:1.7.0" // Update to latest version
     testImplementation "junit:junit:4.13.2" // Updated version for JUnit
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.23" // Update to latest Kotlin version
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.20" // Update to latest Kotlin version
 }
